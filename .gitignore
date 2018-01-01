@@ -1,2 +1,8 @@
+# pydep
+json_util.egg-info/
+
 # python
 *.pyc
+
+# pycharm
+.idea

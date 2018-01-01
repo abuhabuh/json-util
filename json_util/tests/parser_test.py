@@ -1,8 +1,9 @@
-import parser
 import unittest
 
+import json_util.json_eval
 
-class TestParser(unittest.TestCase):
+
+class TestJsonParser(unittest.TestCase):
 
   def test_parse_normal(self):
     dict1 = {
@@ -13,37 +14,37 @@ class TestParser(unittest.TestCase):
       }
     }
 
-    self.assertEqual(parser.parse(dict1, ['asdf']), None)
-    self.assertEqual(parser.parse(dict1, [0]), None)
-    self.assertEqual(parser.parse(dict1, []), None)
-    self.assertEqual(parser.parse(dict1, None), None)
-    self.assertEqual(parser.parse(None, None), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, ['asdf']), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, [0]), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, []), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, None), None)
+    self.assertEqual(json_util.json_eval.get_val(None, None), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', 0]), 'garfield')
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 0]), 'garfield')
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', 3]), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 3]), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', -1]), 'tiffany')
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', -1]), 'tiffany')
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', -4]), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', -4]), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', 'a']), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 'a']), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', 'a', 'b']), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 'a', 'b']), None)
 
   def test_parse_empty(self):
     dict1 = {}
 
-    self.assertEqual(parser.parse(dict1, ['asdf']), None)
-    self.assertEqual(parser.parse(dict1, [0]), None)
-    self.assertEqual(parser.parse(dict1, []), None)
-    self.assertEqual(parser.parse(dict1, None), None)
-    self.assertEqual(parser.parse(None, None), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, ['asdf']), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, [0]), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, []), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, None), None)
+    self.assertEqual(json_util.json_eval.get_val(None, None), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', 0]), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 0]), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', 3]), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 3]), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', -1]), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', -1]), None)
     self.assertEqual(
-      parser.parse(dict1, ['animal', 'cat', 'names', -4]), None)
+      json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', -4]), None)
