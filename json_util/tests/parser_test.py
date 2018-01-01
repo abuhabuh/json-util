@@ -32,6 +32,42 @@ class TestJsonParser(unittest.TestCase):
     self.assertEqual(
       json_util.json_eval.get_val(dict1, ['animal', 'cat', 'names', 'a', 'b']), None)
 
+  def test_parse_with_str(self):
+    dict1 = {
+      'animal': {
+        'cat': {
+          'names': ['garfield', 'john', 'tiffany'],
+          '123': 123
+        }
+      }
+    }
+
+    self.assertEqual(json_util.json_eval.get_val(dict1, 'asdf'), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, '0'), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, ''), None)
+    self.assertEqual(json_util.json_eval.get_val(dict1, None), None)
+    self.assertEqual(json_util.json_eval.get_val(None, None), None)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,names,0'), 'garfield')
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal ,  cat , names,  0'), 'garfield')
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,names,3'), None)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,names,-1'), 'tiffany')
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,names,-4'), None)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,names,a'), None)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,names,a,b'), None)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,123'), None)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,cat,"123"'), 123)
+    self.assertEqual(
+      json_util.json_eval.get_val(dict1, 'animal,,,cat,"123"'), None)
+
   def test_parse_empty(self):
     dict1 = {}
 
