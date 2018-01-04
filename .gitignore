@@ -3,6 +3,8 @@ json_util.egg-info/
 
 # python
 *.pyc
+build/
+dist/
 
 # pycharm
 .idea
