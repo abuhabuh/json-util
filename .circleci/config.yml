@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  build-job:
     docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
@@ -22,6 +22,7 @@ jobs:
 
       # Download and cache dependencies
       - restore_cache:
+          # todo: try with this removed
           keys:
           - v1-dependencies-{{ checksum "requirements.txt" }}
           # fallback to using the latest cache if no exact match is found
@@ -50,7 +51,48 @@ jobs:
             . venv/bin/activate
             make test-py
 
-#      - store_artifacts:
-#          path: test-reports
-#          destination: test-reports
+  deploy-job:
+    docker:
+      - image: circleci/python:2.7
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          # todo: same problem with venv as above
+          command: |
+            rm -rf venv
+            virtualenv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - run:
+          name: build dist
+          command: |
+            echo "Building dist..."
+            which python
+            . venv/bin/activate
+            which python
+            python setup.py sdist
+      - run:
+          name: deploy to s3
+          command: |
+            echo "Deploying to S3..."
+            which python
+            . venv/bin/activate
+            which python
+            source provisioning/env/prod.sh
+            git clone https://github.com/burnsred/pypiserver-to-s3.git deploy/pypi-s3
+            pip install -r deploy/pypi-s3/requirements.txt
+            bash deploy/pypi-s3/update-mirror.sh dist
 
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-job
+      - deploy-job:
+          requires:
+            - build-job
+          filters:
+            branches:
+              only: master

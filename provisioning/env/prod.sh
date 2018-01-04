@@ -1,0 +1,2 @@
+export DEPLOY_BUCKET=fabricsystems-pypi
+export DEPLOY_DIRECTORY=pkgs
